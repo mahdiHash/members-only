@@ -1,0 +1,32 @@
+extends layout 
+
+block content 
+  - let imgSrc = !avatarURL ? '/img/no-avatar.jpg' : `/img/${avatarURL}`
+  div.formContainer 
+    form(method='POST' action=`` enctype='multipart/form-data')
+      h3.formHeader Edit profile
+      div.imgUpContainer 
+        div(id='imgOutput' style=`margin: auto; margin-bottom: 15px; background-image: url(${imgSrc}); background-size: 150px 150px; width: 150px; height: 150px;`)
+        div
+          label(for="imgInp" title='Only .jpg, .png, .jpeg, and .gif extensions are accepted. Maximum file size: 500KB').upBtn Upload 
+          input(type="file" name='userAvatar' id='imgInp' style='display: none;' accept='image/jpg, image/jpeg, image/png, image/gif')
+      br
+
+      label(for='firstnameInp') First name: 
+      input(type='text' name='firstname' id='firstnameInp' value=firstname).formInp
+      br
+      label(for='lastnameInp') Last name: 
+      input(type='text' name='lastname' id='lastnameInp' value=lastname).formInp
+      br
+      label(for='usernameInp') Username: 
+      input(type='text' name='username' id='usernameInp' value=username).formInp
+      br
+      input(type='submit' value='Edit').formBtn
+
+      if (errors) 
+        p(style='margin: 10px 0 0 0;') Error(s):
+        ul(style='margin-top: 5px;')
+          each err in errors 
+            li(style='color: red; font-size: 0.9em; font-weight: normal;') #{err.msg ? err.msg : err.message}
+  
+  script(src='/javascripts/loadImg.js')

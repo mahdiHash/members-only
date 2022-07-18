@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+  div.container 
+    form(action="" method='POST').formContainer 
+      h3.formHeader Become Premium
+      label(for="pcode" style='font-weight: bold;') Code:
+      input(type='text' name='code' id='pcode').formInp 
+      input(type='submit' value='Submit').formBtn
+  if (err)
+    li(style='color: red; font-size: 0.9em; font-weight: normal; margin-top: 10px') #{err.msg ? err.msg : err.message} 

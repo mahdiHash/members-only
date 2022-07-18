@@ -1,0 +1,18 @@
+extends layout 
+
+block content
+  div.container 
+    form(action="" method='POST')
+      h3.formHeader Write a message 
+      label(for="title" style='font-weight: bold; font-size: 0.9em;') Title:
+      input#title(type="text" name='title' style='width: 97%' value=message ? message.title : '').formInp
+      br
+      label(for="msgInp" style='font-weight: bold; font-size: 0.9em;') Text: 
+      textarea#msgInp(name="text" style='width: 97%; max-width: 400px; min-height: 400px; font-family: Arial, Helvetica, sans-serif').formInp #{message ? message.text : ''}
+      br
+      input(type='submit' value='Submit').formBtn 
+    if (errors) 
+        p(style='margin: 10px 0 0 0;') Error(s):
+        ul(style='margin-top: 5px;')
+          each err in errors 
+            li(style='color: red; font-size: 0.9em; font-weight: normal;') #{err.msg ? err.msg : err.message}

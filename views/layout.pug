@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    h2(style='font-family: "Freestyle Script"; text-align: center; font-size: 2.5em;')
+      a(href='/' style='color: #FC4F4F; font-weight: bolder; text-decoration: none;') Pizza Discuss
+    div.nav
+      a(href='/about') About
+      if (user) 
+        a(href=user.url style='margin: 0 0 0 30px; padding: 0;') #{user.username}
+        a(href='/users/logout' style='margin: 0 30px 0 30px; padding: 0;') Log out
+      else 
+        a(href='/users/signup' style='margin: 0 0 0 30px; padding: 0;') Sign Up
+        a(href='/users/login' style='margin: 0 30px 0 30px; padding: 0;') Log in
+      a(href='/') Home
+  block content

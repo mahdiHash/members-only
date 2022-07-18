@@ -1,0 +1,20 @@
+extends layout 
+
+block content 
+  div(style='margin: auto; text-align: center; margin-top: 30px;').container
+    - let imgsrc =  targetUser.avatarURL ? `/img/${targetUser.avatarURL}` : '/img/no-avatar.jpg'
+    img(src=imgsrc width='150px' height='150px' style='margin: auto')
+    p(style='font-weight: bold; font-size: 1em;') First name: #{targetUser.firstname} 
+    p(style='font-weight: bold; font-size: 1em;') Last name: #{targetUser.lastname}
+    p(style='font-weight: bold; font-size: 1em;') Username: #{targetUser.username} 
+    p(style='font-weight: bold; font-size: 1em;') Premium: #{targetUser.premium ? 'Yes' : 'No'}
+    if (user ? user.username == targetUser.username : false)
+      div 
+        button(type='button' style='margin-bottom: 10px').formBtn
+          a(href=`/users/reset-password` style='text-decoration: none; color: black') Reset Password
+        br
+        button(type='button' style='margin-bottom: 10px').formBtn 
+          a(href=`/users/become-premium` style='text-decoration: none; color: black') Become Premium 
+        br
+        button(type='button' style='margin-bottom: 10px').formBtn
+          a(href=`/users/edit-profile` style='text-decoration: none; color: black') Edit Your Profile 

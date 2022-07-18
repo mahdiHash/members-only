@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+  div.formContainer 
+    form(method='POST' action='/users/login')
+      h3.formHeader Log In 
+      label(for="usernameInp") Username: 
+      input#usernameInp(type="text", name="username").formInp
+      br
+      label(for="passInp") Password: 
+      input#passInp(type="password", name="password").formInp
+      br
+      input.formBtn(type='submit' value='Submit')
+    if (err)
+      li(style='color: red; font-size: 0.9em; font-weight: normal; margin-top: 10px') #{err.msg ? err.msg : err.message} 

@@ -1,0 +1,169 @@
+extends layout
+
+block content 
+  div(style='width: 600px; margin-top: 30px;').container 
+    if (user) 
+      a(href='/message/create' style='display: inline-block; color: black; text-decoration: none; text-align: center; marign: auto; width: 100%').formBtn Write a message 
+    else 
+      p(style='font-weight: bold; margin: auto; text-align: center; padding-bottom: 10px; border-bottom: 1px solid #F76E11') You need to 
+        a(href='/users/login' style='color: black;') login
+        |  or 
+        a(href='/users/signup' style='color: black;') signup
+        |  to write a message here.
+
+    each msg in pinnedMsgs
+      //- user not logged in
+      if (!user) 
+        div.msgContainer 
+          p(style='position: absolute; right: 0; top: 5px; color: #FC4F4F; font-size: 0.6em;') Pinned
+          div(style='margin-left: 55px; min-height: 0;').msgInfo 
+            p.msgCreator Anonymous
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+
+      //- user is admin
+      else if (user.is_admin && !user.premium)
+        - let avatarURL = '/img/' + (msg.creator.avatarURL ? msg.creator.avatarURL : 'no-avatar.jpg')
+        div.msgContainer 
+          p(style='position: absolute; right: 0; top: 5px; color: #FC4F4F; font-size: 0.6em;') Pinned          
+          div(style='width: 100px; min-height: 100px; max-height: 250px; display: inline-block; margin-right: 15px; position: absolute; top: 10px;')
+            img(src=avatarURL alt='user avatar').msgUserAvatar
+          div.msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username} (#{msg.creator.fullname})
+            br
+            p.msgTitle #{msg.title}
+            br 
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          div.actionKeysContainer 
+            button(type='button' onclick=`deleteMsg("${msg._id}", this)`).actionKey del 
+            a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+                button(type='bottuon').actionKey edit
+            button(type='button' onclick=`unpinMsg("${msg._id}")`).actionKey unpin
+      
+      //- user is premium
+      else if (user.premium && !user.is_admin) 
+        - let avatarURL = '/img/' + (msg.creator.avatarURL ? msg.creator.avatarURL : 'no-avatar.jpg')
+        div.msgContainer 
+          p(style='position: absolute; right: 0; top: 5px; color: #FC4F4F; font-size: 0.6em;') Pinned
+          div(style='width: 100px; min-height: 100px; max-height: 250px; display: inline-block; margin-right: 15px; position: absolute; top: 10px;')
+            img(src=avatarURL alt='user avatar').msgUserAvatar
+          div.msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username} (#{msg.creator.fullname})
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          if (msg.creator.id === user.id) 
+            div.actionKeysContainer 
+              button(type='button' onclick=`deleteMsg("${msg._id}", this)`).actionKey del 
+              a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+                button(type='bottuon').actionKey edit
+
+      //- user is not premium
+      else if (!(user.premium || user.is_admin))
+        div.msgContainer 
+          p(style='position: absolute; right: 0; top: 5px; color: #FC4F4F; font-size: 0.6em;') Pinned
+          div(style='margin-left: 55px; min-height: 0;').msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username}
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          if (msg.creator.id === user.id) 
+            div.actionKeysContainer 
+              button(type='button' onclick=`deleteMsg("${msg._id}", this)`).actionKey del 
+              a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+                button(type='bottuon').actionKey edit
+
+    each msg in nonPinnedMsgs
+      //- user not logged in
+      if (!user) 
+        div.msgContainer 
+          div(style='margin-left: 55px; min-height: 0;').msgInfo 
+            p.msgCreator Anonymous
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+
+      //- user is admin
+      else if (user.is_admin && !user.premium)
+        - let avatarURL = '/img/' + (msg.creator.avatarURL ? msg.creator.avatarURL : 'no-avatar.jpg')
+        div.msgContainer 
+          div(style='width: 100px; min-height: 100px; max-height: 250px; display: inline-block; margin-right: 15px; position: absolute; top: 10px;')
+            img(src=avatarURL alt='user avatar').msgUserAvatar
+          div.msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username} (#{msg.creator.fullname})
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          div.actionKeysContainer 
+            button(type='button' onclick=`deleteMsg("${msg._id}", this)`).actionKey del 
+            a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+              button(type='bottuon').actionKey edit
+            button(type='button' onclick=`pinMsg("${msg._id}")`).actionKey pin
+      
+      //- user is premium
+      else if (user.premium && !user.is_admin) 
+        - let avatarURL = '/img/' + (msg.creator.avatarURL ? msg.creator.avatarURL : 'no-avatar.jpg')
+        div.msgContainer 
+          div(style='width: 100px; min-height: 100px; max-height: 250px; display: inline-block; margin-right: 15px; position: absolute; top: 10px;')
+            img(src=avatarURL alt='user avatar').msgUserAvatar
+          div.msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username} (#{msg.creator.fullname})
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          if (msg.creator.id === user.id) 
+            div.actionKeysContainer 
+              button(type='button' onclick=`deleteMsg("${msg._id}", this);`).actionKey del
+              a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+                button(type='bottuon').actionKey edit
+
+      //- user is not premium
+      else if (!(user.premium || user.is_admin))
+        div.msgContainer 
+          div(style='margin-left: 55px; min-height: 0;').msgInfo 
+            a(href=`${msg.creator.url}`).msgCreator @#{msg.creator.username}
+            br
+            p.msgTitle #{msg.title}
+            br
+            p.msgTxt #{msg.text}
+            br
+            p.msgTime #{msg.formatted_date}
+            br
+          if (msg.creator.id === user.id) 
+            div.actionKeysContainer 
+              button(type='button' onclick=`deleteMsg("${msg._id}", this)`).actionKey del 
+              a(href=`/message/edit/${msg._id}` style='text-decoration: none; color: black;')
+                button(type='bottuon').actionKey edit
+    
+    if (!(pinnedMsgs.length || nonPinnedMsgs.length)) 
+      p(style='font-weight: bold; text-align: center') There is no message yet!
+  
+  script(src='/javascripts/index.js')

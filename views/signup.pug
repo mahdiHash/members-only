@@ -1,0 +1,37 @@
+extends layout 
+
+block content
+  - let imgSrc = !user || !user.avatarURL ? '/img/no-avatar.jpg' : `/img/${user.avatarURL}`
+  div.formContainer 
+    form(method='POST' action='/users/signup' enctype='multipart/form-data')
+      h3.formHeader Sign Up
+      div.imgUpContainer 
+        div(id='imgOutput' style=`margin: auto; margin-bottom: 15px; background-image: url(${imgSrc}); background-size: 150px 150px; width: 150px; height: 150px;`)
+        div
+          label(for="imgInp" title='Only .jpg, .png, .jpeg, and .gif extensions are accepted. Maximum file size: 500KB').upBtn Upload 
+          input(type="file" name='userAvatar' id='imgInp' style='display: none;' accept='image/jpg, image/jpeg, image/png, image/gif')
+      br
+
+      label(for='firstnameInp') First name: 
+      input(type='text' name='firstname' id='firstnameInp' value=inputs ? inputs.firstname : '').formInp
+      br
+      label(for='lastnameInp') Last name: 
+      input(type='text' name='lastname' id='lastnameInp' value=inputs ? inputs.lastname : '').formInp
+      br
+      label(for='usernameInp') Username: 
+      input(type='text' name='username' id='usernameInp' value=inputs ? inputs.username : '').formInp
+      br
+      label(for='passInp') Password: 
+      input(type='password' name='password' id='passInp').formInp
+      br 
+      label(for='confirmPassInp') Confirm Password: 
+      input(type='password' name='passConfirmVal' id='confirmPassInp').formInp
+      br
+      input(type='submit' value='Register').formBtn
+
+      if (errors) 
+        p(style='margin: 10px 0 0 0;') Error(s):
+        ul(style='margin-top: 5px;')
+          each err in errors 
+            li(style='color: red; font-size: 0.9em; font-weight: normal;') #{err.msg ? err.msg : err.message}
+  script(src='/javascripts/loadImg.js')

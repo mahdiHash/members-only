@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+  div.formContainer 
+    h3.formHeader Reset Password
+    if (isDone) 
+      p(style='font-weight: bold; font-size: 0.9em') Your password is successfully changed.
+      a(href=user.url style='color: black; text-decoration: none; margin: auto;').formBtn Go to your profile
+    else 
+      form(method='POST' action='') 
+        label(for='oldPassInp') Old Password: 
+        input#oldPassInp(type="password", name="oldPass").formInp
+        br
+        label(for="newPassInp") New Password: 
+        input#newPassInp(type="password", name="newPass").formInp
+        br
+        label(for="newPassRepeatInp") Repeat New Password: 
+        input#newPassRepeatInp(type="password", name="newPassConfVal").formInp
+        br
+        input(type='submit' value='Submit').formBtn 
+      if (errors) 
+        p(style='margin: 10px 0 0 0;') Error(s):
+        ul(style='margin-top: 5px;')
+          each err in errors 
+            li(style='color: red; font-size: 0.9em; font-weight: normal;') #{err.msg ? err.msg : err.message}

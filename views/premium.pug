@@ -1,0 +1,9 @@
+extends layout 
+
+block content 
+  div.formContainer 
+    form(method='POST' action='/users/premium') 
+      h3.formHeader Become Premium 
+      label(for="premiumCode") Code: 
+      input(type="text" name="code" id="premiumCode").formInp
+      button(type='button').formBtn Submit
