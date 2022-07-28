@@ -40,7 +40,7 @@ After that:
 cd members-only
 ```
 
-Now you need to create a `.env` file in the root directory. This file is needed so the app can read the database URI, online storage service required information, and admin password from environment variables. Here's the list of variables you need to create:
+Now you need to create a `.env` file in the root directory. This file is needed so the app can read the important and non-public information from environment variables. Here's the list of variables you need to create:
 - `SECRET_KEY`: your online storage service secret key,
 - `ACCESS_KEY`: your online storage service access key,
 - `BUCKET`: your online storage service bucket name,
